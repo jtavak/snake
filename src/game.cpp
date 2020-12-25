@@ -1,7 +1,6 @@
 #define GL_SILENCE_DEPRECATION
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <iostream>
 #include "snakelist.h"
 #include "loadshaders.h"
 #include "vertices.h"
@@ -30,6 +29,7 @@ int main(void){
 		return -1;
 	}
 
+	glfwSetWindowPos(window, 800, 400);
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, key_callback);
 
@@ -66,18 +66,19 @@ int main(void){
 
 		v = calcVertices(s.initialNode, squares);
 
-		if(i%10==0){
+		if(i%15==0){
 
 			if(dir-s.dir == 1 || dir-s.dir == -3)
 				s.turn(1);
-			if(dir-s.dir == -1 || dir-s.dir == 3)
+			else if(dir-s.dir == -1 || dir-s.dir == 3)
 				s.turn(-1);
 
 			s.move(false);
+
+			if(s.game_over() || s.initialNode->x < -1.1 || s.initialNode->x >= 1.0 || s.initialNode->y < -1.1 || s.initialNode->y >= 1.0)
+				break;
 		}
 
-		if(s.game_over() || s.initialNode->x <= -1.1 || s.initialNode->x >= 1.0 || s.initialNode->y <= -1.1 || s.initialNode->y >= 1.0)
-			break;
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -88,6 +89,11 @@ int main(void){
 		glfwSwapBuffers(window);
 
 		glfwPollEvents();
+
+		if(i % 200 == 0){
+			squares++;
+			s.move(true);
+		}
 
 		i++;
 	}

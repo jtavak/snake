@@ -1,6 +1,5 @@
 #include "vertices.h"
 #include "snakelist.h"
-#include <iostream>
 
 Vertex calcVertices(Node *initialNode, int squares){
 

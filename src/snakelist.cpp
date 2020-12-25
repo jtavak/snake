@@ -41,10 +41,10 @@ void SnakeList::turn(int turn){
 }
 
 bool SnakeList::game_over(){
-	int head_x = initialNode->x;
-	int head_y = initialNode->y;
+	float head_x = initialNode->x;
+	float head_y = initialNode->y;
 
-	Node *curr = initialNode;
+	Node *curr = initialNode->next;
 	while(curr != 0){
 		if(curr->x == head_x && curr->y == head_y)
 			return true;
