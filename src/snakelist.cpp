@@ -39,8 +39,10 @@ void SnakeList::turn(int turn){
 }
 
 bool SnakeList::on_food(){
-	if(fabs(initialNode->x - foodNode->x) < 0.001 && fabs(initialNode->y - foodNode->y) < 0.001)
+	if(fabs(initialNode->x - foodNode->x) < 0.001 && fabs(initialNode->y - foodNode->y) < 0.001){
+		foodNode->x
 		return true;
+	}
 	return false;
 }
 
