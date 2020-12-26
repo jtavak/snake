@@ -1,6 +1,7 @@
 #define GL_SILENCE_DEPRECATION
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <ctime>
 #include "snakelist.h"
 #include "loadshaders.h"
 #include "vertices.h"
@@ -29,7 +30,7 @@ int main(void){
 		return -1;
 	}
 
-	glfwSetWindowPos(window, 800, 400);
+	glfwSetWindowPos(window, 100, 0);
 	glfwMakeContextCurrent(window);
 	glfwSetKeyCallback(window, key_callback);
 
@@ -58,15 +59,19 @@ int main(void){
 	glUseProgram(shader);
 
 	SnakeList s;
-	int squares = 10;
+	int squares = 11;
 	Vertex v;
 
-	int i = 1;
+	clock_t framestart;
+	framestart = clock();
 	while (!glfwWindowShouldClose(window)){
 
-		v = calcVertices(s.initialNode, squares);
+		glfwPollEvents();
 
-		if(i%15==0){
+		if(double(clock()-framestart)/CLOCKS_PER_SEC > 0.075){
+			framestart = clock();
+
+			v = calcVertices(s.initialNode, s.foodNode, squares);
 
 			if(dir-s.dir == 1 || dir-s.dir == -3)
 				s.turn(1);
@@ -75,27 +80,17 @@ int main(void){
 
 			s.move(false);
 
-			if(s.game_over() || s.initialNode->x < -1.1 || s.initialNode->x >= 1.0 || s.initialNode->y < -1.1 || s.initialNode->y >= 1.0)
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			glBufferData(GL_ARRAY_BUFFER, v.psize, v.positions, GL_STATIC_DRAW);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.vsize, v.vertices, GL_STATIC_DRAW);
+
+			glDrawElements(GL_TRIANGLES, squares*6, GL_UNSIGNED_INT, nullptr);
+			glfwSwapBuffers(window);
+
+			if(s.game_over() || s.initialNode->x < -1.0 || s.initialNode->x >= 1.0 || s.initialNode->y < -1.1 || s.initialNode->y >= 1.0)
 				break;
 		}
-
-
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		glBufferData(GL_ARRAY_BUFFER, v.psize, v.positions, GL_STATIC_DRAW);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, v.vsize, v.vertices, GL_STATIC_DRAW);
-
-		glDrawElements(GL_TRIANGLES, squares*6, GL_UNSIGNED_INT, nullptr);
-		glfwSwapBuffers(window);
-
-		glfwPollEvents();
-
-		if(i % 200 == 0){
-			squares++;
-			s.move(true);
-		}
-
-		i++;
 	}
 
 	glDeleteProgram(shader);
@@ -105,16 +100,12 @@ int main(void){
 }
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods){
-    if (key == GLFW_KEY_UP && action == GLFW_PRESS){
+    if (key == GLFW_KEY_UP && action == GLFW_PRESS)
     	dir = 0;
-    }
-    else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS){
+    else if (key == GLFW_KEY_DOWN && action == GLFW_PRESS)
     	dir = 2;
-    }
-    else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS){
+    else if (key == GLFW_KEY_LEFT && action == GLFW_PRESS)
     	dir = 3;
-    }
-    else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS){
+    else if (key == GLFW_KEY_RIGHT && action == GLFW_PRESS)
     	dir = 1;
-    }
 }

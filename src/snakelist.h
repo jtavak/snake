@@ -37,6 +37,7 @@ private:
 
 public:
 	Node *initialNode;
+	Node *foodNode;
 	int dir;
 	
 	SnakeList();
@@ -44,6 +45,7 @@ public:
 
 	void move(bool growing);
 	void turn(int turn);
+	bool on_food();
 	bool game_over();
 };
 

@@ -1,16 +1,14 @@
 #include "snakelist.h"
+#include <iostream>
+#include <cmath>
 
 SnakeList::SnakeList(){
 	initialNode = create_node(-0.8, -0.8);
-	push_node(-0.7, -0.8);
-	push_node(-0.6, -0.8);
-	push_node(-0.5, -0.8);
-	push_node(-0.4, -0.8);
-	push_node(-0.3, -0.8);
-	push_node(-0.2, -0.8);
-	push_node(-0.1, -0.8);
-	push_node(0.0, -0.8);
-	push_node(0.1, -0.8);
+	for(int i = 0; i < 9; i++){
+		push_node(-0.8+(i*0.1), -0.8);
+	}
+
+	foodNode = create_node(0.0, 0.0);
 	dir = 1;
 }
 
@@ -38,6 +36,12 @@ void SnakeList::turn(int turn){
 	else if(dir == -1)
 		dir = 3;
 	
+}
+
+bool SnakeList::on_food(){
+	if(fabs(initialNode->x - foodNode->x) < 0.001 && fabs(initialNode->y - foodNode->y) < 0.001)
+		return true;
+	return false;
 }
 
 bool SnakeList::game_over(){

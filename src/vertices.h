@@ -9,6 +9,6 @@ typedef struct{
 	int psize, vsize;
 } Vertex;
 
-Vertex calcVertices(Node *initialNode, int squares);
+Vertex calcVertices(Node *initialNode, Node *foodNode, int squares);
 
 #endif
