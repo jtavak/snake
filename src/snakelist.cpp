@@ -17,6 +17,7 @@ SnakeList::~SnakeList(){
 		delete initialNode;
 		initialNode = next;
 	}
+	delete foodNode;
 }
 
 void SnakeList::move(bool growing){

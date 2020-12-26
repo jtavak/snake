@@ -62,6 +62,9 @@ int main(void){
 	int squares = 3;
 	Vertex v;
 
+	v.positions = new float[squares*8];
+	v.vertices = new unsigned int[squares*6];
+
 	bool growing = false;
 
 	clock_t framestart;
@@ -70,10 +73,18 @@ int main(void){
 
 		glfwPollEvents();
 
-		if(double(clock()-framestart)/CLOCKS_PER_SEC > 0.075){
+		if(double(clock()-framestart)/CLOCKS_PER_SEC > 0.1){
 			framestart = clock();
 
-			v = calcVertices(s.initialNode, s.foodNode, squares);
+			if(growing){
+				delete[] v.positions;
+				delete[] v.vertices;
+
+				v.positions = new float[squares*8];
+				v.vertices = new unsigned int[squares*6];
+			}
+
+			calcVertices(s.initialNode, s.foodNode, squares, &v);
 
 			if(dir-s.dir == 1 || dir-s.dir == -3)
 				s.turn(1);
