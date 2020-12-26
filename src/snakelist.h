@@ -11,7 +11,7 @@ typedef struct Node{
 
 class SnakeList{
 private:
-	Node* create_node(float x, float y){
+	static Node* create_node(float x, float y){
 		Node *node = new Node();
 		node->x = x;
 		node->y = y;

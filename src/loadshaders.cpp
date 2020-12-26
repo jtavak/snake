@@ -1,4 +1,3 @@
-#include <iostream>
 #include <fstream>
 #include <sstream>
 #include <GL/glew.h>
@@ -36,20 +35,6 @@ unsigned int compile_shader(const string &source, unsigned int type){
 	const char *src = source.c_str();
 	glShaderSource(id, 1, &src, nullptr);
 	glCompileShader(id);
-
-	int result;
-	glGetShaderiv(id, GL_COMPILE_STATUS, &result);
-	if(result == GL_FALSE){
-		int length;
-		glGetShaderiv(id, GL_INFO_LOG_LENGTH, &length);
-		char *message = new char[length];
-		glGetShaderInfoLog(id, length, &length, message);
-		cout << message << endl;
-
-		delete[] message;
-		glDeleteShader(id);
-		return 0;
-	}
 
 	return id;
 }

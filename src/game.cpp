@@ -59,8 +59,10 @@ int main(void){
 	glUseProgram(shader);
 
 	SnakeList s;
-	int squares = 11;
+	int squares = 3;
 	Vertex v;
+
+	bool growing = false;
 
 	clock_t framestart;
 	framestart = clock();
@@ -78,7 +80,8 @@ int main(void){
 			else if(dir-s.dir == -1 || dir-s.dir == 3)
 				s.turn(-1);
 
-			s.move(false);
+			s.move(growing);
+			growing = false;
 
 			glClear(GL_COLOR_BUFFER_BIT);
 
@@ -90,6 +93,10 @@ int main(void){
 
 			if(s.game_over() || s.initialNode->x < -1.0 || s.initialNode->x >= 1.0 || s.initialNode->y < -1.1 || s.initialNode->y >= 1.0)
 				break;
+
+			growing = s.on_food();
+			if(growing)
+				squares++;
 		}
 	}
 

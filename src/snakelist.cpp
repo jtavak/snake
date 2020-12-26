@@ -1,12 +1,10 @@
 #include "snakelist.h"
-#include <iostream>
 #include <cmath>
+#include <cstdlib>
 
 SnakeList::SnakeList(){
 	initialNode = create_node(-0.8, -0.8);
-	for(int i = 0; i < 9; i++){
-		push_node(-0.8+(i*0.1), -0.8);
-	}
+	push_node(-0.7, -0.8);
 
 	foodNode = create_node(0.0, 0.0);
 	dir = 1;
@@ -40,7 +38,8 @@ void SnakeList::turn(int turn){
 
 bool SnakeList::on_food(){
 	if(fabs(initialNode->x - foodNode->x) < 0.001 && fabs(initialNode->y - foodNode->y) < 0.001){
-		foodNode->x
+		foodNode->x = float((rand()%20)-10)/10;
+		foodNode->y = float((rand()%20)-10)/10;
 		return true;
 	}
 	return false;
